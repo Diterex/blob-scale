@@ -7,6 +7,13 @@ for the printed parts.
 > ⚠️ v0 draft — nobody has built this exact design yet. If a step doesn't
 > match reality, trust reality and open an issue so we can fix the guide.
 
+**Before you start soldering:** Steps 1–3 below are the same no matter
+what. Step 4 branches — read
+[klipper-setup.md's "Do you even need the Pico?"](klipper-setup.md#do-you-even-need-the-pico)
+first if your printer's mainboard is a modern/high-pin-count board (BTT
+Octopus, SKR3, etc.) — you can likely skip the Pico entirely and wire
+straight to two spare pins on your existing board.
+
 ## How a load cell works (30 seconds of theory)
 
 A bar load cell is a metal bar that bends a *tiny* bit when you push on
@@ -56,9 +63,11 @@ Solder them to the HX711's pads (adult on the iron: it's quick — tin the
 wire, tin the pad, touch together). Twist-and-tape is NOT reliable here;
 the signals are microvolts.
 
-## Step 4 — Wire the HX711 to the Pico
+## Step 4 — Give it a Klipper brain: pick ONE path
 
-Four jumper wires:
+### Path A — Pico (default; works the same on any printer)
+
+Four jumper wires, HX711 → Pico:
 
 | HX711 pin | Pico pin |
 |-----------|----------|
@@ -70,12 +79,24 @@ Four jumper wires:
 (Any two free GPIOs work — GP2/GP3 are just what the example config
 uses. The HX711 is happy at 3.3 V.)
 
-## Step 5 — Give the Pico a Klipper brain
+Then flash the Pico with Klipper firmware — full walkthrough in
+[klipper-setup.md §0](klipper-setup.md) (it has to be *built*, not just
+downloaded — that doc explains why and shows the exact commands). Once
+it's flashed and plugged into the Pi, continue to
+[klipper-setup.md §1](klipper-setup.md).
 
-Follow the official Klipper docs to flash the Pico as a **secondary MCU**
-(search: "Klipper RP2040" — hold BOOTSEL, plug into the printer's Pi,
-copy the UF2 file). Then plug it into the Pi with the USB cable and
-continue to [klipper-setup.md](klipper-setup.md).
+### Path B — straight to your printer's mainboard (skip the Pico)
+
+If your mainboard has 2 free GPIO pins (common on modern boards — BTT
+Octopus, SKR3, etc.), wire the HX711's four pins (VCC, GND, DT, SCK)
+directly to your mainboard instead: VCC/GND to any spare 3.3V/5V + GND
+pair, DT/SCK to two free GPIOs. Which pins are actually free depends on
+your specific board and config — check your board's pinout diagram
+against your `printer.cfg`. See
+[klipper-setup.md's "Do you even need the Pico?"](klipper-setup.md#do-you-even-need-the-pico)
+for the full trade-off and a tip on where free pins often hide. No
+firmware flashing needed — your mainboard is already running Klipper.
+Skip straight to [klipper-setup.md §2](klipper-setup.md).
 
 ## Step 6 — Place it and test
 
