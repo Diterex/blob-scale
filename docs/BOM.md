@@ -7,9 +7,9 @@ your parts drawer. Nothing exotic.
 |---|------|-----|-------|-------|
 | 1 | **Bar load cell, 5 kg** (TAL220 style, straight bar w/ 4 wires) | 1 | $4–8 | The sensor. 5 kg gives plenty of headroom (container + clay is well under 500 g) and still resolves ~0.1 g through the HX711. Often sold *with* the HX711 board as a kit — buy the kit. 1 kg also works if you have one. |
 | 2 | **HX711 amplifier board** (the little green breakout) | 1 | $2–4 | Translates the load cell's tiny signal into numbers a microcontroller can read. Included in most load-cell kits. |
-| 3 | **Raspberry Pi Pico** (or any spare Klipper-capable MCU) | 1 | $4–6 | The clean way to connect: the Pico runs Klipper as a *second* controller over USB, so you don't touch your printer's main board. If your printer board has 2 truly spare GPIO pins, you can skip the Pico. |
-| 4 | **Jumper wires** (female-female Dupont, ~20 cm) | 4+ | $1–2 | HX711 → Pico. Pre-crimped = no soldering on that side. |
-| 5 | **USB cable** (matching the Pico: micro-USB) | 1 | $0–3 | Pico → the computer running Klipper (usually your printer's Pi). Data cable, not charge-only. |
+| 3 | **Raspberry Pi Pico** *(optional — see below)* | 1 | $4–6 | The clean way to connect: the Pico runs Klipper as a *second* controller over USB, so you don't touch your printer's main board. **Skip items 3–5 entirely if your printer's mainboard has 2 free GPIO pins** — modern boards (BTT Octopus, SKR3, etc.) usually do; see [klipper-setup.md](klipper-setup.md#do-you-even-need-the-pico) for the trade-offs and where to look for free pins. |
+| 4 | **Jumper wires** (female-female Dupont, ~20 cm) | 4+ | $1–2 | HX711 → Pico (or → your mainboard if skipping the Pico). Pre-crimped = no soldering on that side. |
+| 5 | **USB cable** (matching the Pico: micro-USB) | 1 | $0–3 | Pico → the computer running Klipper (usually your printer's Pi). Data cable, not charge-only. Not needed if wiring directly to your mainboard. |
 | 6 | **M4 and M5 bolts** for the load cell | 2+2 | $1 | Check YOUR cell's datasheet: TAL220-style cells typically take M5 on one end, M4 on the other. Length = plate thickness + ~8 mm. |
 | 7 | **3D-printed platform** (2 parts) | — | pennies | Print from [hardware/](../hardware/) in any rigid filament (PETG/PLA fine). |
 | 8 | **Catch container** | 1 | free | Any light, rigid tub — yogurt container, deli cup. Must fit your blobs; wider is better. |

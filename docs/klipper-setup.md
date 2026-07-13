@@ -7,7 +7,46 @@
 > disagree, the official docs win. Klipper version matters: load-cell
 > support needs a recent release.
 
+## Do you even need the Pico?
+
+**No — it's the default because it works the same way for everyone,
+regardless of what printer mainboard they have. It is not required.**
+
+Klipper's HX711 support just needs two free GPIO pins on *any* board
+already running Klipper firmware — including your printer's own
+mainboard. If you'd rather not add a second controller:
+
+- Skip §0–1 below entirely.
+- In `[load_cell]` (§2), use your main `mcu` instead of `scale:` — e.g.
+  `dout_pin: PC4` instead of `dout_pin: scale:gpio2` (real pin names
+  depend on your board and what's already used).
+- Everything from §2 onward (calibration, macros) is identical either
+  way.
+
+**Trade-offs, honestly:**
+
+| | Pico (default) | Direct to mainboard |
+|---|---|---|
+| Parts/cost | +1 board, +1 USB cable | none extra |
+| Firmware upkeep | rebuild+reflash on every Klipper update | none (already handled for your printer) |
+| Finding free pins | never an issue (Pico is dedicated) | you have to find & confirm 2 free GPIOs |
+| Portability | unplug, use on any printer | wired into this one printer |
+| Best for | "just make it work," unknown/low-pin boards | modern boards with GPIO to spare, builders comfortable editing printer.cfg |
+
+**Powerful modern boards** (BTT Octopus Pro, SKR3, etc. — plenty of spare
+GPIO, fast MCU, no real contention risk from a slow periodic HX711 read)
+are good direct-wire candidates. One place to look for free pins: if you
+run KlipperScreen (or Mainsail/Fluidd only) rather than a physical
+onboard mini LCD, the **EXP1/EXP2 display header** many boards have is
+often entirely unused and breaks out several individually addressable
+GPIOs on a convenient pin header — worth checking against your board's
+pinout diagram and your own `printer.cfg` before committing to specific
+pins.
+
 ## 0. Flash the Pico — yes, it needs firmware
+
+(Skip this whole section if you're wiring directly to your mainboard —
+its firmware is already Klipper, nothing to flash.)
 
 A brand-new Pico is a blank chip. To become a Klipper "second brain" it
 must run **Klipper's microcontroller firmware** — and there's no
@@ -58,6 +97,9 @@ and reflashed the same way, or Klipper will refuse to start with a
 version-mismatch error. This bites everyone once; now it won't bite you.
 
 ## 1. Register the Pico as a second MCU
+
+(Also skip this if wiring directly to your mainboard — there's no
+second MCU to register, just use your existing `mcu` name in §2.)
 
 In `printer.cfg`:
 
