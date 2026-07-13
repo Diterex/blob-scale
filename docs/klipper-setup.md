@@ -174,6 +174,18 @@ the blob to settle → read → decide → repeat) is standard Klipper, but
 the whole file is a sketch until the first build validates it. The
 manual-entry macros are the dependable path meanwhile.
 
+## 5b. Optional: reservoir refill tracking
+
+`flow_check.cfg`'s comments mention a few macros this repo doesn't
+include — `SYRINGE_CHANGE`, `LDM_RESERVOIR_STATUS`,
+`LDM_RESERVOIR_CHECKPOINT`. Those live in a separate, optional companion
+file, `klipper_syringe_change.cfg`, from the CeramicaSlicer project (the
+LDM Vase Plus slicer fork this hardware was built for) — it tracks how
+much clay has been dispensed since the last reservoir refill and prompts
+you to keep-or-rerun the flow calibration on a new load. Not needed for
+flow_check.cfg itself to work; grab it from that project's `corpus/`
+directory if you want the refill-tracking layer too.
+
 ## 6. One page cheat sheet
 
 | Command | What it does |

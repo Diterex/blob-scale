@@ -28,10 +28,14 @@ jams.
 
 ## Step 1 — Print the platform parts
 
-Print `base_plate` and `top_plate` from [hardware/](../hardware/)
-(see that folder's README for slicing notes — rigid material, high infill).
-Before printing, check the two hole-spacing numbers against your load
-cell's datasheet and adjust the `.scad` file if needed — cells vary.
+Open [`hardware/platform.scad`](../hardware/platform.scad) in OpenSCAD.
+**Before rendering**, check the hole-spacing numbers at the top against
+your load cell's datasheet and adjust if needed — cheap cells vary.
+Press F6, export STL. This produces **one STL with both plates side by
+side**: the left one is the base plate (bolts to the cell's M5 end), the
+right one is the top plate (bolts to the M4 end) — not two separate
+files. Slice and print both from that one STL (rigid material, high
+infill — see [hardware/README.md](../hardware/README.md) for details).
 
 ## Step 2 — Bolt the sandwich together
 
