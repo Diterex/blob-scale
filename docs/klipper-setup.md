@@ -7,6 +7,56 @@
 > disagree, the official docs win. Klipper version matters: load-cell
 > support needs a recent release.
 
+## 0. Flash the Pico — yes, it needs firmware
+
+A brand-new Pico is a blank chip. To become a Klipper "second brain" it
+must run **Klipper's microcontroller firmware** — and there's no
+download-a-file shortcut: **you build the firmware yourself on the Pi**,
+from the same Klipper installation your printer already runs. (That
+matters: Klipper insists the firmware on every MCU matches the version
+of the Klipper software on the Pi. Building it on the Pi guarantees the
+match; a random UF2 from the internet won't.)
+
+On the Pi (SSH in, or use the terminal in Mainsail/Fluidd):
+
+```bash
+cd ~/klipper
+make menuconfig
+```
+
+A blue menu appears. Set exactly one thing:
+
+- **Micro-controller Architecture** → `Raspberry Pi RP2040`
+
+Leave everything else at defaults. Press `Q`, save, then:
+
+```bash
+make
+```
+
+A couple of minutes later the firmware exists at
+`~/klipper/out/klipper.uf2`.
+
+Now put the Pico in bootloader mode: **hold down the white BOOTSEL
+button** on the Pico while plugging its USB cable into the Pi, then let
+go. The Pico shows up as a little USB drive called `RPI-RP2`. Copy the
+firmware onto it:
+
+```bash
+sudo mount /dev/sda1 /mnt && sudo cp ~/klipper/out/klipper.uf2 /mnt && sudo umount /mnt
+```
+
+(If `/dev/sda1` doesn't exist, run `lsblk` right after plugging in to
+see what name the Pico got.)
+
+The Pico reboots itself instantly, the drive disappears, and it is now —
+permanently, until you ever reflash it — a Klipper MCU. No button
+pressing needed on normal power-up.
+
+**When you update Klipper later**, the Pico's firmware must be rebuilt
+and reflashed the same way, or Klipper will refuse to start with a
+version-mismatch error. This bites everyone once; now it won't bite you.
+
 ## 1. Register the Pico as a second MCU
 
 In `printer.cfg`:
