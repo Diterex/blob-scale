@@ -74,5 +74,7 @@ run by the printer itself.
 
 ## License
 
-[MIT](LICENSE) — use it, change it, sell it, teach with it. Attribution
-appreciated.
+[GNU AGPLv3](LICENSE) — free to use, study, modify, share, and sell. If
+you distribute a modified version — **or run one as a network service** —
+you must make your modified source available under this same license.
+Improvements flow back to everyone; nobody gets to take this closed.

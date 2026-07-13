@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later
 // blob-scale platform - parametric plates for a standard bar load cell
 // (DRAFT v0 - UNTESTED. Verify hole spacing against YOUR cell's datasheet
 // before printing; cheap cells vary.)
