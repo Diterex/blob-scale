@@ -5,7 +5,7 @@ your parts drawer. Nothing exotic.
 
 | # | Part | Qty | ~Cost | Notes |
 |---|------|-----|-------|-------|
-| 1 | **Bar load cell, 5 kg** (TAL220 style, straight bar w/ 4 wires) | 1 | $4–8 | The sensor. 5 kg gives plenty of headroom (container + clay is well under 500 g) and still resolves ~0.1 g through the HX711. Often sold *with* the HX711 board as a kit — buy the kit. 1 kg also works if you have one. |
+| 1 | **Bar load cell, 1–5 kg** (TAL220 style, straight bar w/ 4 wires) | 1 | $4–8 | The sensor. **1 kg is the sweet spot** — your loads (container + clay across a sweep) stay well under 1 kg, and a lower-capacity cell gives *finer* resolution on 5–30 g blobs. 5 kg also works (more headroom, slightly coarser). Both use the same ~80 mm bar and the same platform. Often sold *with* the HX711 board as a kit — buy the kit. |
 | 2 | **HX711 amplifier board** (the little green breakout) | 1 | $2–4 | Translates the load cell's tiny signal into numbers a microcontroller can read. Included in most load-cell kits. |
 | 3 | **Raspberry Pi Pico** *(optional — see below)* | 1 | $4–6 | The clean way to connect: the Pico runs Klipper as a *second* controller over USB, so you don't touch your printer's main board. **Skip items 3–5 entirely if your printer's mainboard has 2 free GPIO pins** — modern boards (BTT Octopus, SKR3, etc.) usually do; see [klipper-setup.md](klipper-setup.md#do-you-even-need-the-pico) for the trade-offs and where to look for free pins. |
 | 4 | **Jumper wires** (female-female Dupont, ~20 cm) | 4+ | $1–2 | HX711 → Pico (or → your mainboard if skipping the Pico). Pre-crimped = no soldering on that side. |

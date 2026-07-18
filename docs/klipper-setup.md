@@ -121,6 +121,14 @@ sclk_pin: scale:gpio3
 # counts_per_gram gets filled in by calibration below
 ```
 
+Wiring **direct to a printer mainboard** instead of a Pico? Drop the
+`scale:` prefix and use your board's own pin names, e.g. `dout_pin: PE9`
+/ `sclk_pin: PE10`. **Power the HX711 from 3.3V, not 5V**, when wiring
+straight to a 3.3V-logic MCU (STM32, RP2040) — at 5V VCC the HX711's
+DOUT/SCK would drive 5V onto GPIO that expects 3.3V. Take 3.3V from a
+3.3V-carrying header and **verify the pin with a multimeter** (some
+boards, e.g. early BTT Octopus, have swapped 3.3V/GND silkscreen labels).
+
 `FIRMWARE_RESTART`, then check it's alive:
 
 ```
@@ -134,16 +142,27 @@ HX711's power.
 
 A US nickel is exactly **5.000 g** from the mint. Stack of 10 = 50 g.
 
+`LOAD_CELL_CALIBRATE` starts an **interactive tool**. The sequence:
+
 ```
-LOAD_CELL_CALIBRATE
+LOAD_CELL_CALIBRATE          ; starts the tool
+TARE                         ; with NOTHING on the plate — sets zero
+                             ; (now place the known weight, e.g. 10 nickels = 50 g)
+CALIBRATE GRAMS=50           ; tell it the exact grams you placed
+ACCEPT                       ; saves counts_per_gram (ABORT bails without saving)
 ```
 
-Follow the prompts (tare empty, then place the known weight and tell it
-how much it is). `SAVE_CONFIG` writes the calibration into printer.cfg.
+`ACCEPT` writes `counts_per_gram` into printer.cfg (via SAVE_CONFIG) —
+don't hand-edit it.
 
-Sanity check afterward: tare, place one nickel, confirm ~5.0 g. Then
-place your empty catch container and note its weight — if the container
-ever reads different later, clay crumbs are hiding under it.
+Sanity check afterward: `LOAD_CELL_TARE`, place one nickel, `LOAD_CELL_READ`,
+confirm ~5.0 g. Then place your empty catch container and note its weight
+— if the container ever reads different later, clay crumbs are hiding
+under it.
+
+> Note: the `force_g` status field only reads once the cell is **calibrated
+> AND tared** (before that it's undefined) — that's the normal state during
+> a flow run, which always tares first, so the auto layer reads it fine.
 
 ## 4. Hook up the flow macros
 
