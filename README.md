@@ -3,10 +3,14 @@
 **A ~$15 scale your 3D printer reads by itself — for automatic clay and
 paste flow calibration.**
 
-> ⚠️ **Status: v0 draft.** This design has not been physically built yet.
-> It follows well-documented parts and official Klipper support, but until
-> the first build is photographed and verified, treat every step as "check
-> this yourself." Found a problem? Open an issue!
+> ⚠️ **Status: v0 draft.** First hardware build in progress (July 2026).
+> Early fixes from testing are integrated here. Until the first build is
+> photographed and fully validated, treat every step as "check this yourself."
+> Found a problem? Open an issue!
+>
+> **Note**: This repo is a working branch for calibration macro development.
+> Fixes discovered here sync upstream to [CeramicaSlicer](https://github.com/Diterex/CeramicaSlicer)
+> once validated.
 
 ## What is this?
 
@@ -57,7 +61,9 @@ with adult supervision for the iron.
 2. **[Build guide](docs/build-guide.md)** — step-by-step assembly,
    written so a young teen can follow it.
 3. **[Klipper setup](docs/klipper-setup.md)** — wiring the sensor into
-   your printer's brain and calibrating it with pocket change.
+   your printer's brain, calibrating with pocket change, and detecting
+   your scale's timeout (§ 4b). Auto-reading handles Klipper version
+   differences automatically.
 4. **[Macros](macros/)** — the flow-calibration routines (manual-entry
    mode works with ANY kitchen scale today; auto mode uses the blob-scale).
 5. **[Printed parts](hardware/)** — parametric OpenSCAD platform; adjust

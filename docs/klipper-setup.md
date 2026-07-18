@@ -160,19 +160,49 @@ Edit the `_LDM_FLOW_CFG` block at the top for your machine (drop height,
 where the scale sits, blob size). That file works **today with any
 kitchen scale** — you type the readings in.
 
+## 4b. Detect your scale's timeout (one-time diagnostic)
+
+Different kitchen scales have different auto-power-off timers (typically
+5–30 seconds). Before running a flow calibration, detect yours:
+
+```
+LDM_FLOW_DETECT_SCALE_TIMEOUT
+```
+
+The macro extrudes a dummy blob and monitors when your scale stops
+responding. It stores the result and warns you if your calibration
+settings risk timing out (scale powers off before the blob lands).
+
+Record the detected timeout. If you get "scale reads 0g" errors during
+calibration, re-run this diagnostic and use the suggested blob_e or
+rate_start values it recommends.
+
 ## 5. Go automatic (the whole point)
 
 [`macros/flow_scale_auto.cfg`](../macros/flow_scale_auto.cfg) contains
 the auto-reading layer: instead of typing `READING=12.3`, the macro asks
 the load cell itself.
 
-**Important honesty note:** the exact way a macro reads "current grams"
-out of Klipper's load_cell object (the status field name) must be
-verified against your Klipper version — the file marks the one line to
-check. The delayed-gcode chaining pattern it uses (extrude → wait for
-the blob to settle → read → decide → repeat) is standard Klipper, but
-the whole file is a sketch until the first build validates it. The
-manual-entry macros are the dependable path meanwhile.
+Auto-reading mode **automatically detects which Klipper version's
+load_cell field name your system uses** on first run — no manual edits
+needed. The delayed-gcode chaining pattern it uses (extrude → wait for
+the blob to settle → read → decide → repeat) is standard Klipper.
+
+### Troubleshooting auto-reading
+
+If the macro reads `0g` repeatedly:
+
+1. Check that your load cell is connected and calibrated (run
+   `LOAD_CELL_DIAGNOSTIC`; you should see non-zero values when you place
+   weight on it).
+2. If the scale reads correctly in DIAGNOSTIC but auto-reading still shows
+   0g, the field-name detection may have failed. File a GitHub issue with:
+   - Your Klipper version (run `FIRMWARE_RESTART` and check the console)
+   - The output of `LOAD_CELL_DIAGNOSTIC` (to see which fields are
+     available)
+
+Meanwhile, the manual-entry macros (`LDM_FLOW_TUNE` → `LDM_FLOW_NEXT
+READING=<grams>`) work reliably on any Klipper version.
 
 ## 5b. Optional: reservoir refill tracking
 
