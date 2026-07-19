@@ -68,6 +68,9 @@ with adult supervision for the iron.
    mode works with ANY kitchen scale today; auto mode uses the blob-scale).
 5. **[Printed parts](hardware/)** — parametric OpenSCAD platform; adjust
    two numbers to fit any standard bar load cell.
+6. **[Roadmap](docs/roadmap.md)** — where this goes next: validating the
+   blob-drop loop (M1), then a staged toolhead **force-sensing** mode (M2)
+   for consistency, ooze/pressure-advance, and clog detection.
 
 ## Where this comes from
 
