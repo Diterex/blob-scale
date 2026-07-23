@@ -43,6 +43,35 @@ GPIOs on a convenient pin header — worth checking against your board's
 pinout diagram and your own `printer.cfg` before committing to specific
 pins.
 
+### Verified per-board quick reference (direct-wire)
+
+Pin assignments below were read from each board's **official BigTreeTech
+pinout diagram** (`Hardware/` folder of the board's GitHub repo) — but
+boards get revised, so treat this as a strong starting point and glance at
+YOUR board's diagram before soldering. Signals are 3.3 V logic on all
+three; the differences are where 3.3 V *power* is available.
+
+| | HX711 **DOUT** | HX711 **SCK** | HX711 **GND** | HX711 **VCC (3.3 V!)** |
+|---|---|---|---|---|
+| **BTT Octopus / Octopus Pro** (STM32) | `PE9` (EXP1 pin 3) | `PE10` (EXP1 pin 4) | EXP1 pin 9 | **Accelerometer/ADXL SPI header 3.3 V** (⚠ meter-verify: some early boards have 3.3V/GND silkscreen swapped) |
+| **BTT SKR Pico v1.0** (RP2040) | `gpio22` (PROBE pin) | `gpio29` (SERVOS signal pin — ignore that header's 5 V) | any endstop/servo GND | ⚠ **No 3.3 V on any connector** — every header carries 5 V or 12/24 V. Take VCC from the **Raspberry Pi's 3V3** (40-pin header, physical pin 1 or 17; the Pi is your Klipper host and shares ground via its wiring to the board). Solder-comfortable? The SWD pads carry 3.3 V. **Never 5 V — the RP2040 is not 5 V-tolerant.** |
+| **BTT Manta M5P** (STM32G0B1) | `PC13` (Probe header signal) | `PC15` (same Probe header, servo/control pin) | Probe header GND | **SPI/ADXL header 3.3 V** (top-left 2×4 header: it has both 3.3 V and GND; don't touch its SPI signal pins) |
+
+Alternates if the primary pins are taken on your machine: SKR Pico —
+`gpio16` (E0-STOP) for DOUT, `gpio24` (RGB) for SCK; Manta M5P — EXP1
+`PD5`/`PD4` (display header, free when you have no onboard LCD), or the
+MIN4 endstop `PC2`. Endstop/probe/RGB headers on BOTH boards put **5 V**
+on their power pin — use only their *signal* and *GND* pins, and power
+the HX711 from the 3.3 V source in the table.
+
+Matching `[load_cell]` pin lines:
+
+```ini
+# Octopus / Octopus Pro          # SKR Pico v1.0            # Manta M5P
+dout_pin: PE9                    dout_pin: gpio22           dout_pin: PC13
+sclk_pin: PE10                   sclk_pin: gpio29           sclk_pin: PC15
+```
+
 ## 0. Flash the Pico — yes, it needs firmware
 
 (Skip this whole section if you're wiring directly to your mainboard —
